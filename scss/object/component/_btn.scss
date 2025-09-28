@@ -1,0 +1,8 @@
+@charset "UTF-8";
+@use "../../foundation/mixin";
+@use "../../object/utility/color";
+.c-btn {
+    padding: 0 20px;
+    height: 60px;
+    border-radius: 10px;
+}

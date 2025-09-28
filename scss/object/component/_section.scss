@@ -1,0 +1,27 @@
+@charset "UTF-8";
+@use "../../foundation/mixin";
+@use "../utility/color";
+.c-section-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    .c-section-title {
+        font-size: 3.2rem;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        @include mixin.mid {
+            font-size: 3.4rem;
+        }
+    }
+    .c-section-subtitle {
+        font-size: 1.4rem;
+        letter-spacing: 0.05em;
+        margin-top: 5px;
+        font-weight: 700;
+        color: color.$mainColor;
+        display: inline-block;
+        @include mixin.mid {
+            font-size: 1.4rem;
+        }
+    }
+}

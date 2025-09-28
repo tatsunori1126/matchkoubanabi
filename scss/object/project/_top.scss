@@ -1,0 +1,133 @@
+@charset "UTF-8";
+@use "../../foundation/mixin";
+@use "../utility/color";
+.p-top-fv {
+    height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    background: color.$mainColor;
+    .p-top-fv__title-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .p-top-fv__title {
+            font-size: 5.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: color.$subColor;
+        }
+        .p-top-fv__subtitle {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            line-height: 1.7;
+            margin: 40px 0 90px;
+            color: color.$subColor;
+        }
+        .p-top-fv__link-wrapper {
+            display: flex;
+            justify-content: center;
+            column-gap: 45px;
+            .p-top-fv__search-link {
+                background: color.$subColor;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 200px;
+                color: color.$mainColor;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+                font-size: 1.8rem;
+                column-gap: 6px;
+                .fa-arrow-right {
+                    margin-top: 2px;
+                }
+            }
+            .p-top-fv__register-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 200px;
+                border: 2px solid color.$subColor;
+                color: color.$subColor;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+                font-size: 1.8rem;
+                column-gap: 6px;
+                .fa-arrow-right {
+                    margin-top: 2px;
+                }
+            }
+        }
+    }
+}
+
+// マッチ工場ナビとは
+.p-top-about {
+    padding: 120px 0;
+    .p-top-about__title-wrapper {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    .p-top-about__top-text {
+        text-align: center;
+        line-height: 1.8;
+        font-size: 1.6rem;
+    }
+    .p-top-about__item-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 80px;
+        .p-top-about__item-wrapper {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            row-gap: 20px;
+            text-align: center;
+            .p-top-about__item-icon-wrapper {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: #DBEAFE;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
+                .fa-solid {
+                    font-size: 3rem;
+                }
+            }
+            .p-top-about__item-title-wrapper {
+                display: flex;
+                flex-direction: column;
+                row-gap: 20px;
+                .p-top-about__item-title {
+                    font-size: 2.4rem;
+                    font-weight: 700;
+                    letter-spacing: 0.05em;
+                    color: color.$mainColor;
+                }
+                .p-top-about__item-text {
+                    font-size: 1.6rem;
+                    letter-spacing: 0.05em;
+                    line-height: 1.7;
+                }
+            }
+        }
+    }
+}
+
+// 地域から選ぶ
+.p-top-area {
+    padding: 120px 0;
+    background: #F9FAFB;
+    .p-top-area__title-wrapper {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    .p-top-area__top-text {
+        text-align: center;
+        line-height: 1.8;
+        font-size: 1.6rem;
+    }
+}
