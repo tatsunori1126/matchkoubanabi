@@ -563,6 +563,7 @@ body {
   font-weight: 500;
   position: relative;
   transition: opacity 0.3s;
+  border-radius: 10px;
 }
 .p-header .p-header__inner .p-header__nav .p-header__nav-list-pc .p-header__nav-item .p-header__nav-link-contact:hover {
   opacity: 0.8;
@@ -758,6 +759,88 @@ body {
   text-align: center;
   line-height: 1.8;
   font-size: 1.6rem;
+}
+.p-top-area .p-top-area__container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+.p-top-area .p-top-area__container .p-top-area__wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+.p-top-area .p-top-area__container .p-top-area__wrapper .p-top-area__item-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #2660AD;
+}
+.p-top-area .p-top-area__container .p-top-area__wrapper .p-top-area__item-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.p-top-area .p-top-area__container .p-top-area__wrapper .p-top-area__item-list .p-top-area__item .p-top-area__item-link {
+  padding: 0 30px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #b5b5b5;
+  color: #393939;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+}
+
+.p-top-industry {
+  padding: 120px 0;
+  background: #ecf5ff;
+}
+.p-top-industry .p-top-industry__title-wrapper {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.p-top-industry .p-top-industry__top-text {
+  text-align: center;
+  line-height: 1.8;
+  font-size: 1.6rem;
+}
+.p-top-industry .p-top-industry__container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+.p-top-industry .p-top-industry__container .p-top-industry__wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+.p-top-industry .p-top-industry__container .p-top-industry__wrapper .p-top-industry__item-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #2660AD;
+}
+.p-top-industry .p-top-industry__container .p-top-industry__wrapper .p-top-industry__item-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.p-top-industry .p-top-industry__container .p-top-industry__wrapper .p-top-industry__item-list .p-top-industry__item .p-top-industry__item-link {
+  padding: 0 30px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #b5b5b5;
+  color: #393939;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
 }
 
 .error-404-container {
