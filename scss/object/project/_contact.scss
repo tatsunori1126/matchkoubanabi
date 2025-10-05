@@ -1,0 +1,600 @@
+@charset "UTF-8";
+@use "../../foundation/mixin";
+@use "../utility/color";
+// お問い合わせフォーム
+.p-contact__input-container {
+    padding: 60px 0;
+    @include mixin.mid {
+        padding: 110px 0;
+    }
+    .p-contact__input-title {
+        font-weight: 600;
+        color: color.$mainColor;
+        letter-spacing: 0.06em;
+        line-height: 1.67;
+        margin-bottom: 45px;
+        font-size: 2rem;
+        @include mixin.sub {
+            font-size: 2.4rem;
+        }
+    }
+    .p-contact__input-text {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        line-height: 1.8;
+        letter-spacing: 0.06em;
+    }
+    .wpcf7 {
+        form {
+            .contact-input-item-container {
+                display: flex;
+                flex-direction: column;
+                row-gap: 12px;
+                padding: 20px 0;
+                border-top: 1px solid rgba(162, 162, 162, 0.3);
+                @include mixin.mid {
+                    flex-direction: row;
+                    align-items: baseline;
+                    column-gap: 20px;
+                }
+                span {
+                    width: 100%;
+                    @include mixin.mid {
+                        width: 400px;
+                    }
+                    input {
+                        padding: 0 15px;
+                        height: 48px;
+                        width: 100%;
+                        letter-spacing: 0.06em;
+                        background: #f7f7f7;
+                        font-size: 1.6rem;
+                        @include mixin.sub {
+                            font-size: 1.7rem;
+                        }
+                    }
+                    input::placeholder {
+                        color: #C7C7C7;
+                        font-size: 1.6rem;
+                        letter-spacing: 0.06em;
+                        @include mixin.mid {
+                            font-size: 1.7rem;
+                        }
+                    }
+                    span {
+                        span {
+                            label {
+                                display: flex;
+                                input[type="radio"] {
+                                    width: 20px;
+                                    height: 20px;
+                                    margin-right: 10px;
+                                    margin-top: 3px;
+                                    border: 1px solid #C7C7C7;
+                                    @include mixin.mid {
+                                        margin-top: 0;
+                                    };
+                                }
+                                span {
+                                    font-size: 1.6rem;
+                                    font-weight: 500;
+                                    @include mixin.sub {
+                                        font-size: 1.7rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .contact-input-item-box {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 10px;
+                    @include mixin.mid {
+                        justify-content: space-between;
+                        width: 270px;
+                        column-gap: 0;
+                    }
+                    .contact-input-item-title {
+                        white-space: nowrap;
+                        font-size: 1.6rem;
+                        width: auto;
+                        font-weight: 600;
+                        letter-spacing: 0.06em;
+                        @include mixin.mid {
+                            font-size: 1.7rem;
+                        }
+                    }
+                    .hissu {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.2rem;
+                        background: color.$mainColor;
+                        width: 45px;
+                        height: 23px;
+                        font-weight: 500;
+                        letter-spacing: 0.05em;
+                        color: color.$subColor;
+                    }
+                }
+                .contact-input-address-box {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 17px;
+                    @include mixin.mid {
+                        width: 70%;
+                    }
+                    span {
+                        width: 100%;
+                    }
+                    .contact-input-address-block {
+                        display: flex;
+                        align-items: center;
+                        column-gap: 13px;
+                        span {
+                            @include mixin.mid {
+                                width: 193px;
+                            }
+                        }
+                    }
+                }
+                .contact-radio-kinds-box {
+                    width: 100%;
+                    @include mixin.mid {
+                        width: 65%;
+                    }
+                    @include mixin.pc {
+                        width: 69%;
+                    }
+                    span {
+                        width: 100%;
+                        label {
+                            display: flex;
+                            align-items: center;
+                            input[type="radio"] {
+                                width: 20px;
+                                height: 20px;
+                                margin-right: 10px;
+                                margin-top: 3px;
+                                border: 1px solid #C7C7C7;
+                                @include mixin.mid {
+                                    margin-top: 0;
+                                };
+                            }
+                            span {
+                                font-size: 1.6rem;
+                                font-weight: 600;
+                                letter-spacing: 0.06em;
+                                @include mixin.sub {
+                                    font-size: 1.7rem;
+                                }
+                            }
+                        }
+                        textarea {
+                            padding: 15px;
+                            width: 100%;
+                            height: 170px;
+                            background: #f7f7f7;
+                            line-height: 1.8;
+                            font-size: 1.6rem;
+                            margin-top: 42px;
+                            letter-spacing: 0.06em;
+                            @include mixin.sub {
+                                font-size: 1.7rem;
+                            }
+                            @include mixin.mid {
+                                height: 195px;
+                            }
+                        }
+                        textarea::placeholder {
+                            color: #C7C7C7;
+                            font-size: 1.6rem;
+                            @include mixin.mid {
+                                font-size: 1.7rem;
+                            }
+                        }
+                    }
+                }
+                span {
+                    .wpcf7-radio {
+                        display: flex;
+                        width: 100%;
+                        flex-wrap: wrap;
+                        column-gap: 25px;
+                        row-gap: 15px;
+                        @include mixin.mid {
+                            column-gap: 40px;
+                            row-gap: 30px;
+                        }
+                        span {
+                            width: auto;
+                            margin: 0;
+                            label {
+                                justify-content: flex-start;
+                                margin-bottom: 0;
+                                align-items: center;
+                                flex-direction: row;
+                            }
+                        }
+                    }
+                }
+                .email-confirm-box {
+                    @include mixin.mid {
+                        width: 400px;
+                    }
+                }
+            }
+            .contact-input-item-container-address {
+                @include mixin.mid {
+                    align-items: center;
+                }
+            }
+            .contact-input-item-container-radio {
+                align-items: flex-start;
+            }
+            .p-page-contact-input-form-contents-box {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                row-gap: 12px;
+                @include mixin.mid {
+                    flex-direction: row;
+                }
+            }
+            .contact-input-item-container-file {
+                border-bottom: 1px solid rgba(162,162,162,.3);
+                @include mixin.mid {
+                    align-items: center;
+                }
+                span {
+                    input {
+                        background: transparent;
+                        display: flex;
+                        column-gap: 24px;
+                        align-items: center;
+                        height: auto;
+                        padding: 0;
+                        font-size: 1.4rem;
+                        letter-spacing: 0.06em;
+                        font-weight: 600;
+                        color: #69696e;
+                    }
+                    /* 「選択されていません」のテキストと余白の調整 */
+                    input[type="file"]::file-selector-button {
+                        margin-right: 24px; /* テキストとの間に余白を追加 */
+                        background: color.$subColor;
+                        border: 1px solid #888888;
+                        border-radius: 3px;
+                        padding: 0 24px;
+                        height: 35px;
+                        font-size: 1.4rem;
+                        cursor: pointer;
+                        color: color.$textColor;
+                        letter-spacing: 0.06em;
+                        font-weight: 600;
+                    }
+                }
+            }
+            // プライバシーポリシー文章
+            .p-page__policy-box {
+                padding: 20px;
+                border: 1px solid #a2a2a2;
+                border-radius: 4px;
+                height: 200px;
+                overflow-y: scroll;
+                margin: 25px auto 0;
+                @include mixin.pc {
+                    width: 835px;
+                }
+
+                .p-page__policy-text {
+                    font-size: 1.3rem;
+                    letter-spacing: 0.06em;
+                    line-height: 1.8;
+                    margin-bottom: 15px;
+                    font-weight: 600;
+                    @include mixin.mid {
+                        margin-bottom: 30px;
+                        font-size: 1.5rem;
+                    }
+                    a {
+                        color: color.$textColor;
+                    }
+                }
+                .p-page__policy-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 15px;
+                    font-weight: 400;
+                    letter-spacing: 0.1em;
+                    @include mixin.mid {
+                        font-size: 2.2rem;
+                        margin-bottom: 35px;
+                    }
+                }
+            }
+            .privacy-policy-box {
+                margin: 40px 0;
+                font-weight: 600;
+                line-height: 1.6;
+                font-size: 1.4rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                letter-spacing: 0.06em;
+                @include mixin.mid {
+                    font-size: 1.6rem;
+                    text-align: center;
+                }
+                span {
+                    width: 20px;
+                    height: 20px;
+                    margin-left: 0;
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    input[type="checkbox"] {
+                        width: 20px;
+                        height: 20px;
+                        vertical-align: middle;
+                        border: 2px solid #6e6e6e;
+                    }
+                }
+            }
+            .confirm-btn-box {
+                text-align: center;
+                .p-page-contact-input-confirm-btn-block {
+                    margin: 0 auto;
+                    max-width: 328px;
+                    width: 100%;
+                    height: 66px;
+                    position: relative;
+                    .p-page-contact-input-confirm-btn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: #FFFFFF;
+                        font-weight: 600;
+                        transition: all 0.3s;
+                        margin: 0 auto;
+                        width: 100%;
+                        height: 100%;
+                        font-size: 1.6rem;
+                        letter-spacing: 0.06em;
+                        background: color.$mainColor;
+                    }
+                    .p-page-contact-input-confirm-btn:hover {
+                        opacity: 0.8;
+                    }
+                    .wpcf7-spinner {
+                        display: none;
+                    }
+                }
+                .p-page-contact-input-confirm-btn-block::after {
+                    content: "";
+                    position: absolute;
+                    right: 25px;
+                    top: 50%;
+                    transform: translateY(-50%) rotate(45deg);
+                    width: 8px;
+                    height: 8px;
+                    border-right: 2px solid #FFFFFF;
+                    border-top: 2px solid #FFFFFF;
+                    transition: all 0.2s;
+                }
+            }
+            .wpcf7-response-output {
+                display: none;
+            }
+        }
+    }
+
+    // 確認画面
+    /* モーダル全体のスタイル */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background: rgba(0, 0, 0, 0.5);
+        /* モーダルコンテンツのスタイル */
+        .modal-content {
+            background: color.$subColor;
+            width: 90%;
+            padding: 60px 6.67%;
+            margin: 20% auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            @include mixin.mid {
+                padding: 80px 6.67%;
+            }
+            @include mixin.pc {
+                padding: 80px 40px;
+                margin: 15% auto;
+                max-width: 1000px;
+            }
+            .p-contact__confirm-title {
+                font-weight: 600;
+                color: color.$mainColor;
+                letter-spacing: 0.06em;
+                line-height: 1.67;
+                margin-bottom: 45px;
+                font-size: 2rem;
+                @include mixin.sub {
+                    font-size: 2.4rem;
+                }
+            }
+            .p-contact__confirm-text {
+                font-size: 1.6rem;
+                font-weight: 600;
+                margin-bottom: 30px;
+                line-height: 1.8;
+                letter-spacing: 0.06em;
+            }
+            .p-contact__confirm-contents-container {
+                display: flex;
+                flex-direction: column;
+                .p-contact__confirm-contents-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 10px;
+                    align-items: baseline;
+                    padding: 20px 0;
+                    border-top: 1px solid rgba(162,162,162,.3);
+                    @include mixin.mid {
+                        flex-direction: row;
+                    }
+                    .p-contact__confirm-contents-title {
+                        font-size: 1.7rem;
+                        letter-spacing: 0.06em;
+                        font-weight: 600;
+                        @include mixin.mid {
+                            width: 25%;
+                        }
+                    }
+                    .p-contact__confirm-item {
+                        font-size: 1.7rem;
+                        letter-spacing: 0.06em;
+                        font-weight: 500;
+                        word-break: break-all;
+                        @include mixin.mid {
+                            width: 70%;
+                        }
+                    }
+                    .p-contact__confirm-item-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 15px;
+                        @include mixin.mid {
+                            width: 70%;
+                        }
+                        #confirm-contents {
+                            font-size: 1.7rem;
+                            letter-spacing: 0.06em;
+                            line-height: 1.7;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+            .p-contact__confirm-button-wrapper {
+                display: flex;
+                flex-direction: column;
+                margin-top: 40px;
+                align-items: center;
+                row-gap: 20px;
+                @include mixin.mid {
+                    flex-direction: row;
+                    row-gap: 0;
+                    justify-content: center;
+                    column-gap: 40px;
+                    margin-top: 60px;
+                }
+                .confirm-button {
+                    width: 100%;
+                    height: 66px;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                    font-size: 1.6rem;
+                    letter-spacing: 0.06em;
+                    @include mixin.tab {
+                        width: 328px;
+                    }
+                    .fa-chevron-left {
+                        position: absolute;
+                        left: 30px;
+                    }
+                    .fa-chevron-right {
+                        position: absolute;
+                        right: 30px;
+                    }
+                }
+                .confirm-button:hover {
+                    opacity: 0.8;
+                }
+                .wpcf7-spinner {
+                    display: none;
+                }
+                .p-contact__confirm-prev-button {
+                    border: 1px solid color.$mainColor;
+                    color: color.$mainColor;
+                }
+                .p-contact__confirm-thanks-button {
+                    background: color.$mainColor;
+                    color: #FFFFFF;
+                }
+            }
+        }
+    }
+}
+
+// 完了画面
+.p-contact__complete-container {
+    padding: 60px 0;
+    @include mixin.mid {
+        padding: 110px 0;
+    }
+    .p-contact__complete-inner {
+        padding: 0 6.77%;
+        @include mixin.pc {
+            padding: 0;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .p-contact__complete-title {
+            font-weight: 600;
+            color: color.$mainColor;
+            letter-spacing: 0.06em;
+            line-height: 1.67;
+            margin-bottom: 45px;
+            text-align: center;
+            font-size: 2rem;
+            @include mixin.sub {
+                font-size: 2.4rem;
+            }
+        }
+        .p-contact__complete-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            row-gap: 50px;
+            .p-contact__complete-top-text {
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                line-height: 1.8;
+                font-size: 1.6rem;
+                @include mixin.sub {
+                    font-size: 1.8rem;
+                }
+            }
+            .p-contact__complete-toppage {
+                font-size: 1.6rem;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: color.$textColor;
+                text-decoration: underline;
+                text-underline-offset: 20%;
+                width: fit-content;
+                margin: 0 auto;
+                @include mixin.sub {
+                    font-size: 1.8rem;
+                }
+                @include mixin.mid {
+                    transition: opacity 0.3s;
+                }
+            }
+            .p-contact__complete-toppage:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+}

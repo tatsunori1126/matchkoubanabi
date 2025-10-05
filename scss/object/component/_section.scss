@@ -25,3 +25,16 @@
         }
     }
 }
+
+// 下層ページのタイトル
+.c-page__section-title-wrapper {
+    padding: 80px 0;
+    background: color.$mainColor;
+    text-align: center;
+    .c-page__section-title {
+        color: color.$subColor;
+        font-size: 3.8rem;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+    }
+}

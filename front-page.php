@@ -3,10 +3,10 @@
     <div class="p-top-fv">
         <div class="c-inner">
             <div class="p-top-fv__title-wrapper">
-                <h1 class="p-top-fv__title">製造業界の未来をつなぐ</h1>
+                <h1 class="p-top-fv__title"><span class="p-top-fv__title-font">製造業界</span>の<span class="p-top-fv__title-font">未来</span>をつなぐ</h1>
                 <h2 class="p-top-fv__subtitle">企業同士のビジネスマッチングから人材採用まで<br>製造業に特化したワンストップソリューション</h2>
                 <div class="p-top-fv__link-wrapper">
-                    <a href="<?php echo esc_url(home_url('/service/')); ?>" class="c-btn p-top-fv__search-link">企業を探す<i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="<?php echo esc_url(home_url('/company/')); ?>" class="c-btn p-top-fv__search-link">企業を探す<i class="fa-solid fa-arrow-right"></i></a>
                     <a href="<?php echo esc_url(home_url('/recruit/')); ?>" class="c-btn p-top-fv__register-link">求人情報を見る<i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -132,72 +132,88 @@
             </div>
             <p class="p-top-industry__top-text">お近くの製造業パートナーを探したい企業様は、地域別の検索からご覧ください。</p>
             <?php
-/**
- * 業種（industry）タクソノミー一覧出力
- * 親ターム（大分類）→ 子ターム（詳細業種）をHTML構造そのままで生成
- * - タクソノミー名：industry（変更時は $taxonomy を置き換え）
- * - 親の表示順は $parents の配列順に固定
- * - 子は name 昇順（必要ならタームメタで任意順序に変更可）
- */
+            /**
+             * 業種（industry）タクソノミー一覧出力
+             * 親ターム（大分類）→ 子ターム（詳細業種）をHTML構造そのままで生成
+             * - タクソノミー名：industry（変更時は $taxonomy を置き換え）
+             * - 親の表示順は $parents の配列順に固定
+             * - 子は name 昇順（必要ならタームメタで任意順序に変更可）
+             */
 
-$taxonomy = 'industry';
+            $taxonomy = 'industry';
 
-// 親ターム（大分類）のスラッグ順序を指定
-$parents = [
-  'automotive-transport', // 自動車・輸送機器
-  'electronics',          // 電気・電子機器
-  'machinery',            // 機械・設備
-  'metal-steel',          // 金属・鉄鋼
-  'chemical-plastic',     // 化学・プラスチック
-  'food-beverage',        // 食品・飲料
-  'other-manufacturing',  // その他製造業
-];
+            // 親ターム（大分類）のスラッグ順序を指定
+            $parents = [
+            'automotive-transport', // 自動車・輸送機器
+            'electronics',          // 電気・電子機器
+            'machinery',            // 機械・設備
+            'metal-steel',          // 金属・鉄鋼
+            'chemical-plastic',     // 化学・プラスチック
+            'food-beverage',        // 食品・飲料
+            'other-manufacturing',  // その他製造業
+            ];
 
-echo '<div class="p-top-industry__container">';
+            echo '<div class="p-top-industry__container">';
 
-foreach ( $parents as $parent_slug ) {
+            foreach ( $parents as $parent_slug ) {
 
-    // 親ターム取得
-    $parent = get_term_by( 'slug', $parent_slug, $taxonomy );
-    if ( ! $parent || is_wp_error( $parent ) ) {
-        // 親が存在しない場合はスキップ（未作成時の崩れ防止）
-        continue;
-    }
+                // 親ターム取得
+                $parent = get_term_by( 'slug', $parent_slug, $taxonomy );
+                if ( ! $parent || is_wp_error( $parent ) ) {
+                    // 親が存在しない場合はスキップ（未作成時の崩れ防止）
+                    continue;
+                }
 
-    // 子ターム（詳細業種）取得
-    $children = get_terms([
-        'taxonomy'   => $taxonomy,
-        'parent'     => (int) $parent->term_id,
-        'hide_empty' => false,     // 投稿が無くても一覧に出したい
-        'orderby'    => 'name',    // 50音順／アルファベット順
-        'order'      => 'ASC',
-    ]);
+                // 子ターム（詳細業種）取得
+                $children = get_terms([
+                    'taxonomy'   => $taxonomy,
+                    'parent'     => (int) $parent->term_id,
+                    'hide_empty' => false,     // 投稿が無くても一覧に出したい
+                    'orderby'    => 'name',    // 50音順／アルファベット順
+                    'order'      => 'ASC',
+                ]);
 
-    echo '<div class="p-top-industry__wrapper">';
+                echo '<div class="p-top-industry__wrapper">';
 
-    // 見出し：親ターム名（例：自動車・輸送機器）
-    echo '<h3 class="p-top-industry__item-title">' . esc_html( $parent->name ) . '</h3>';
+                // 見出し：親ターム名（例：自動車・輸送機器）
+                echo '<h3 class="p-top-industry__item-title">' . esc_html( $parent->name ) . '</h3>';
 
-    echo '<ul class="p-top-industry__item-list">';
+                echo '<ul class="p-top-industry__item-list">';
 
-    if ( ! empty( $children ) && ! is_wp_error( $children ) ) {
-        foreach ( $children as $child ) {
-            $link = get_term_link( $child, $taxonomy );
-            if ( is_wp_error( $link ) ) {
-                continue;
+                if ( ! empty( $children ) && ! is_wp_error( $children ) ) {
+                    foreach ( $children as $child ) {
+                        $link = get_term_link( $child, $taxonomy );
+                        if ( is_wp_error( $link ) ) {
+                            continue;
+                        }
+                        echo '<li class="p-top-industry__item">';
+                        echo '  <a href="' . esc_url( $link ) . '" class="p-top-industry__item-link">' . esc_html( $child->name ) . '</a>';
+                        echo '</li>';
+                    }
+                }
+
+                echo '</ul>';
+                echo '</div>'; // .p-top-industry__wrapper
             }
-            echo '<li class="p-top-industry__item">';
-            echo '  <a href="' . esc_url( $link ) . '" class="p-top-industry__item-link">' . esc_html( $child->name ) . '</a>';
-            echo '</li>';
-        }
-    }
 
-    echo '</ul>';
-    echo '</div>'; // .p-top-industry__wrapper
-}
+            echo '</div>'; // .p-top-industry__container
+            ?>
+        </div>
+    </section>
 
-echo '</div>'; // .p-top-industry__container
-?>
+    <!-- 採用情報 -->
+    <section class="p-top-recruit">
+        <div class="p-top-recruit__mask"></div>
+        <div class="c-inner">
+            <div class="c-section-title-wrapper p-top-recruit__title-wrapper">
+                <h2 class="c-section-title p-top-recruit__title">採用情報も充実</h2>
+            </div>
+            <div class="p-top-recruit__container">
+                <p class="p-top-recruit__text">企業の詳細情報だけでなく、採用情報も掲載！<br>製造業界でのキャリアアップをサポートします！</p>
+                <div class="p-top-recruit__btn-wrapper">
+                    <a href="<?php echo esc_url(home_url('/recruit/')); ?>" class="c-btn p-top-recruit__btn">求人情報を見る<i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
     </section>
 

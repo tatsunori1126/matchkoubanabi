@@ -28,31 +28,44 @@
                 <img class="p-header__logo" src="<?php echo get_template_directory_uri(); ?>/images/common/logo.png" alt="マッチ工場ナビ">
             </a>
         <?php endif; ?>
-            <nav class="p-header__nav">
-                <ul class="p-header__nav-list-pc">
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo home_url('about'); ?>">企業一覧</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo home_url('products'); ?>">採用情報</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo home_url('equipment'); ?>">マッチ工場ナビとは</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo home_url('company'); ?>">お問い合わせ</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo get_post_type_archive_link('news'); ?>">お知らせ・ブログ</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link" href="<?php echo home_url('recruit'); ?>">会員登録</a>
-                    </li>
-                    <li class="p-header__nav-item">
-                        <a class="p-header__nav-link-contact" href="<?php echo home_url('contact-input'); ?>">お問い合わせ<i class="fa-solid fa-arrow-right"></i></a>
-                    </li>
-                </ul>
-            </nav>
+        <nav class="p-header__nav">
+    <ul class="p-header__nav-list-pc">
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link" href="<?php echo get_post_type_archive_link('company'); ?>">企業一覧</a>
+        </li>
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link" href="<?php echo get_post_type_archive_link('recruit'); ?>">採用情報</a>
+        </li>
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link" href="<?php echo home_url('about'); ?>">サービスについて</a>
+        </li>
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link" href="<?php echo get_post_type_archive_link('topics'); ?>">トピックス</a>
+        </li>
+
+        <?php if ( is_user_logged_in() ) : ?>
+            <li class="p-header__nav-item">
+                <a class="p-header__nav-link" href="<?php echo home_url('mypage'); ?>">企業様マイページ</a>
+            </li>
+            <li class="p-header__nav-item">
+                <a class="p-header__nav-link" href="<?php echo wp_logout_url( home_url() ); ?>">ログアウト</a>
+            </li>
+        <?php else : ?>
+            <li class="p-header__nav-item">
+                <a class="p-header__nav-link" href="<?php echo home_url('login'); ?>">掲載企業様ログイン</a>
+            </li>
+        <?php endif; ?>
+
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link" href="<?php echo home_url('application'); ?>">掲載申請</a>
+        </li>
+        <li class="p-header__nav-item">
+            <a class="p-header__nav-link-contact" href="<?php echo home_url('contact-input'); ?>">お問い合わせ<i class="fa-solid fa-arrow-right"></i></a>
+        </li>
+    </ul>
+</nav>
+
+
             <button type="button" class="hamburger-btn">
                 <span class="btn-line"></span>
             </button>

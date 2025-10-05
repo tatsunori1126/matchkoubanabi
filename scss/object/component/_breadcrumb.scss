@@ -1,21 +1,56 @@
 @charset "UTF-8";
 @use "../../foundation/mixin";
 @use "../../object/utility/color";
-.breadcrumbs {
-    font-size: 1.4rem;
-    margin: 0 0 60px;
-    @include mixin.pc {
-        max-width: 1100px;
-        margin: 0 auto 90px;
-        text-align: left;
+.c-breadcrumbs {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    @include mixin.mid {
+        height: 80px;
     }
-    span {
-        a {
-            text-decoration: none;
+    .c-breadcrumbs__inner {
+        padding: 0 6.67%;
+        width: 100%;
+        overflow: hidden; /* 内容がはみ出した場合に隠す */
+        display: -webkit-box; /* ボックスレイアウトを使用 */
+        -webkit-line-clamp: 1; /* 表示する行数を2行に設定 */
+        -webkit-box-orient: vertical; /* 垂直方向にボックスを配置 */
+        text-overflow: ellipsis; /* 省略記号を追加 */
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        @include mixin.pc {
+            padding: 0;
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+        span {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            @include mixin.mid {
+                font-size: 1.3rem;
+            }
+            span {
+                color: color.$textColor;
+            }
+            .home {
+                text-decoration: none;
+                color: color.$textColor;
+            }
+            .current-item {
+                color: color.$textColor;
+            }
+            .archive {
+                span {
+                    color: color.$textColor;
+                }
+            }
+        }
+        .fa-chevron-right {
+            margin: 0 8px;
+            font-size: 0.8rem;
             color: color.$textColor;
         }
-    }
-    .fa-chevron-right {
-        margin: 0 10px;
     }
 }

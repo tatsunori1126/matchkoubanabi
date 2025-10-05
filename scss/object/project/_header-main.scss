@@ -7,6 +7,7 @@
     left: 0;
     width: 100%;
     background: #FFFFFF;
+    z-index: 5000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     @include mixin.mid {
         height: 72px;
@@ -37,7 +38,7 @@
                 }
                 .p-header__nav-item {
                     .p-header__nav-link {
-                        font-size: 1.8rem;
+                        font-size: 1.6rem;
                         font-weight: 500;
                         letter-spacing: 0.02em;
                         color: #000000;
@@ -50,25 +51,23 @@
                     }
                     .p-header__nav-link-contact {
                         height: 53px;
-                        width: 223px;
+                        padding: 0 20px;
                         background: color.$mainColor;
                         color: #FFFFFF;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 1.8rem;
+                        font-size: 1.6rem;
                         letter-spacing: 0.04em;
                         font-weight: 500;
-                        position: relative;
                         transition: opacity 0.3s;
                         border-radius: 10px;
+                        column-gap: 8px;
                         &:hover {
                             opacity: 0.8;
                         }
                         .fa-arrow-right {
                             font-size: 1.6rem;
-                            position: absolute;
-                            right: 30px;
                             margin-top: 2px;
                         }
                     }

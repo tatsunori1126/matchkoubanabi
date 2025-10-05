@@ -35,6 +35,11 @@
    @use "object/project/footer-main";
    @use "object/project/top";
    @use "object/project/error-404";
+   @use "object/project/application";
+   @use "object/project/company";
+   @use "object/project/about";
+   @use "object/project/topics";
+   @use "object/project/contact";
 
 /* Utility
    ----------------------------------------------------------------- */

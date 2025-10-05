@@ -5,16 +5,22 @@
     height: calc(100vh - 72px);
     display: flex;
     align-items: center;
-    background: color.$mainColor;
+    background-image: url("../images/top/mv.jpg");
+    background-size: cover;
+    background-position: center;
     .p-top-fv__title-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         .p-top-fv__title {
-            font-size: 5.8rem;
+            font-size: 4.8rem;
             font-weight: 700;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             color: color.$subColor;
+            .p-top-fv__title-font {
+                color: color.$mainColor;
+                font-size: 5.8rem;
+            }
         }
         .p-top-fv__subtitle {
             font-size: 2.4rem;
@@ -48,7 +54,7 @@
                 align-items: center;
                 justify-content: center;
                 width: 200px;
-                border: 2px solid color.$subColor;
+                background: color.$mainColor;
                 color: color.$subColor;
                 font-weight: 700;
                 letter-spacing: 0.05em;
@@ -215,6 +221,56 @@
                     }
                 }
             }
+        }
+    }
+}
+
+// 採用情報
+.p-top-recruit {
+    padding: 120px 0;
+    background-image: url("../images/top/recruit-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 0;
+    .p-top-recruit__mask {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+    .p-top-recruit__title-wrapper {
+        text-align: center;
+        .p-top-recruit__title {
+            color: color.$subColor;
+        }
+    }
+    .p-top-recruit__container {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 60px;
+        .p-top-recruit__text {
+            text-align: center;
+            color: color.$subColor;
+            line-height: 1.8;
+            font-size: 1.6rem;
+        }
+        .p-top-recruit__btn {
+            background: color.$subColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 60px;
+            color: color.$mainColor;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            column-gap: 8px;
+            margin: 0 auto;
         }
     }
 }

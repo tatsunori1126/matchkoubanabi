@@ -1,85 +1,221 @@
 @charset "UTF-8";
 @use "../../foundation/mixin";
 @use "../../object/utility/color";
-.wp-pagenavi {
-    text-align: center;
-    line-height: 28px;
-    font-size: 1.8rem;
-    span.current {
-        margin: 0 5px;
-        border-color: color.$subColor;
-        font-weight: 400;
-    }
-    a {
-        display: inline-block;
-        color: color.$textColor;
-        background: color.$subColor;
-        border: 1px solid color.$textColor;
-    }
-    span {
-        display: inline-block;
-        background: color.$textColor;
-        color: color.$subColor;
-        font-weight: 400;
-    }
-}
 .c-arrow {
-    width: 100%;
-    margin-bottom: 60px;
-    @include mixin.mid {
-        margin-bottom: 90px;
-    }
     .c-pagination {
-        width: 100%;
         .wp-pagenavi {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             width: 100%;
+            max-width: 350px;
+            margin: 0 auto;
+            @include mixin.tab {
+                width: 400px;
+                max-width: 100%;
+            }
+            @include mixin.mid {
+                width: auto;
+                max-width: 800px;
+            }
             span, .larger, .smaller {
-                    display: inline-block;
-                    width: 38px;
-                    height: 38px;
-                    margin: 0 5px;
-                    transition: 0.4s;
-                    border: 1px solid color.$textColor;
-                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: none;
+                    font-weight: 700;
+                    font-size: 1.8rem;
+                    color: color.$textColor;
+                    font-family: "Montserrat", serif;
+                    margin: 0 3%;
+                    @include mixin.tab {
+                        margin: 0 15px;
+                    }
+                    @include mixin.mid {
+                        transition: 0.3s;
+                    }
+            }
+            .current {
+                text-decoration: underline;
+                text-underline-offset: 5px;
+            }
+            .smaller {
+                color: rgba(48, 48, 48, 0.50);
+            }
+            .extend {
+                margin: 0;
+            }
+            .last {
+                font-weight: 700;
+                color: color.$textColor;
+                border: none;
+                font-size: 1.8rem;
+                font-family: "Montserrat", serif;
+                margin: 0 3%;
+                @include mixin.tab {
+                    margin: 0 15px;
+                }
+                @include mixin.mid {
+                    transition: 0.3s;
+                }
             }
             .larger:hover {
-                background: color.$textColor;
-                color: color.$subColor;
-                border-color: color.$subColor;
-                cursor: pointer;
+                opacity: 0.8;
             }
             .smaller:hover {
-                background: color.$textColor;
-                color: color.$subColor;
-                border-color: color.$textColor;
-                cursor: pointer;
+                opacity: 0.8;
+            }
+            .last:hover {
+                opacity: 0.8;
             }
             .previouspostslink, .nextpostslink {
-                border: 1px solid color.$textColor;
-                color: color.$textColor;
-                width: 38px;
-                height: 38px;
-                margin: 0 5px;
-                transition: 0.4s;
-                font-size: 1.8rem;
-                .fa-chevron-left::before {
-                    font-size: 1.4rem;
+                border: none;
+                color: color.$subColor;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: color.$mainColor;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                letter-spacing: 0.1em;
+                font-family: "Montserrat", serif;
+                font-weight: 700;
+                position: absolute;
+                @include mixin.tab {
+                    width: 60px;
+                    height: 60px;
                 }
-                .fa-chevron-right::before {
+                @include mixin.mid {
+                    width: 240px;
+                    border-radius: 200px;
                     font-size: 1.4rem;
+                    transition: 0.3s;
                 }
+                .fa-chevron-left {
+                    @include mixin.mid {
+                        font-size: 1.2rem;
+                        position: absolute;
+                        left: 30px;
+                    }
+                }
+                .fa-chevron-right {
+                    @include mixin.mid {
+                        font-size: 1.2rem;
+                        position: absolute;
+                        right: 30px;
+                    }
+                }
+                .pagenavi-text {
+                    display: none;
+                    @include mixin.mid {
+                        display: block;
+                    }
+                }
+            }
+            .previouspostslink {
+                left: 0;
+            }
+            .nextpostslink {
+                right: 0;
             }
             .previouspostslink:hover {
-                background: color.$textColor;
-                color: color.$subColor;
-                border-color: color.$textColor;
-                cursor: pointer;
+                opacity: 0.8;
             }
             .nextpostslink:hover {
-                background: color.$textColor;
-                color: color.$subColor;
-                border-color: color.$textColor;
-                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+}
+
+// 詳細ページナビゲーション
+.c-single__pagenavi-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 50px;
+    margin: 70px auto 0;
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    @include mixin.tab {
+        max-width: 300px;
+    }
+    @include mixin.mid {
+        max-width: 100%;
+        width: auto;
+    }
+    .post-previous, .post-next {
+        position: absolute;
+        a {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: color.$mainColor;
+            color: color.$subColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+            font-weight: 700;
+            font-family: "Montserrat", serif;
+            @include mixin.mid {
+                border-radius: 200px;
+                width: 240px;
+            }
+            .fa-chevron-left {
+                position: absolute;
+                font-size: 1.4rem;
+                @include mixin.mid {
+                    font-size: 1.2rem;
+                    left: 30px;
+                }
+            }
+            .fa-chevron-right {
+                position: absolute;
+                font-size: 1.4rem;
+                @include mixin.mid {
+                    font-size: 1.2rem;
+                    right: 30px;
+                }
+            }
+            .post-previous-text, .post-next-text {
+                display: none;
+                @include mixin.mid {
+                    display: block;
+                }
+            }
+        }
+        a:hover {
+            opacity: 0.8;
+        }
+    }
+    .post-previous {
+        left: 0;
+    }
+    .post-next {
+        right: 0;
+    }
+    .c-single__pagenavi-return-box {
+        .c-single__pagenavi-return {
+            color: color.$textColor;
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            position: relative;
+            text-decoration: underline;
+            text-underline-offset: 5px;
+            @include mixin.mid {
+                transition: all 0.3s;
+            }
+            &:hover {
+                @include mixin.mid {
+                    opacity: 0.8;
+                }
             }
         }
     }

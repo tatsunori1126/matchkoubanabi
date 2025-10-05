@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@use "../../foundation/mixin";
+@use "../utility/color";
+.p-application {
+    padding: 120px 0;
+    .p-application__inner {
+        max-width: 800px;
+        margin: 0 auto;
+        #wpmem_reg {
+            #wpmem_register_form {
+                fieldset {
+                    border: none;
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 30px;
+                    legend {
+                        display: none;
+                    }
+                    .wpmem-row {
+                        display: flex;
+                        border-bottom: 1px solid #d6d6d6;
+                        padding-bottom: 10px;
+                        label {
+                            width: 30%;
+                            color: color.$textColor;
+                            font-size: 1.6rem;
+                            letter-spacing: 0.05em;
+                        }
+                        .div_text {
+                            width: 70%;
+                            input {
+                                font-size: 1.6rem;
+                                letter-spacing: 0.05em;
+                                color: color.$textColor;
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
