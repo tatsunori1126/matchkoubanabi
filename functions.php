@@ -58,41 +58,59 @@ add_action( 'init', 'disable_emoji_feature' );
 * CSSとJavaScriptの読み込み
 ***********************************************************/
 function enqueue_theme_assets() {
-    wp_enqueue_style('theme-style', get_stylesheet_uri(), array(), filemtime(get_template_directory() . '/style.css'));
+  // --- CSS ---
+  wp_enqueue_style('theme-style', get_stylesheet_uri(), array(), filemtime(get_template_directory() . '/style.css'));
 
-    // Swiper CSS
-    wp_enqueue_style('swiper', 'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css', array(), null);
+  // Swiper CSS
+  wp_enqueue_style('swiper', 'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css', array(), null);
 
-    // Font Awesome CSS
-    wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v6.6.0/css/all.css', array(), null);
+  // Font Awesome CSS
+  wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v6.6.0/css/all.css', array(), null);
 
-    // Google Fonts（preconnectを追加）
-    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap', array(), null);
+  // Google Fonts
+  wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap', array(), null);
 
-    // Custom CSS
-    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/style.min.css', array(), filemtime(get_template_directory() . '/css/style.min.css'));
+  // Custom CSS
+  wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/style.min.css', array(), filemtime(get_template_directory() . '/css/style.min.css'));
 
-    // jQuery
-    wp_enqueue_script('jquery');
 
-    // Swiper JS
-    wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js', array(), null, true);
+  // --- JavaScript ---
+  // jQuery
+  wp_enqueue_script('jquery');
 
-    // Custom JS - 圧縮版を読み込むように修正
+  // Swiper JS
+  wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js', array(), null, true);
+
+  // GSAP（本体 + ScrollTrigger）
+  wp_enqueue_script('gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js', array(), null, true);
+  wp_enqueue_script('gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js', array('gsap'), null, true);
+
+  // --- カスタムJS（共通） ---
+  wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/script.min.js', array('jquery'), filemtime(get_template_directory() . '/js/script.min.js'), true);
+
+  // --- ✅ マイページ専用スクリプト ---
+  if (is_page('mypage')) { // 固定ページスラッグが "mypage" の場合のみ読み込む
+      wp_enqueue_script(
+          'mypage',
+          get_template_directory_uri() . '/js/mypage.js',
+          array('jquery'),
+          filemtime(get_template_directory() . '/js/mypage.js'),
+          true
+      );
+  }
+  // --- ✅ 企業一覧・タクソノミー専用スクリプト ---
+  if (is_post_type_archive('company') || is_tax(array('area', 'industry'))) {
+    wp_enqueue_script(
+        'company',
+        get_template_directory_uri() . '/js/company.js',
+        array('jquery'),
+        filemtime(get_template_directory() . '/js/company.js'),
+        true
+    );
+  }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_assets');
 
-// GSAPとScrollTriggerの読み込み
-function enqueue_gsap_with_scrolltrigger() {
-    // GSAP本体を読み込む
-    wp_enqueue_script('gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js', array(), null, true);
-    wp_script_add_data('gsap', 'async', true); // 非同期読み込み
-
-    // ScrollTriggerプラグインを読み込む
-    wp_enqueue_script('gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js', array('gsap'), null, true);
-    wp_script_add_data('gsap-scrolltrigger', 'async', true); // 非同期読み込み
-}
-add_action('wp_enqueue_scripts', 'enqueue_gsap_with_scrolltrigger');
 
 
 /***********************************************************
@@ -346,13 +364,32 @@ function mkn_ensure_company_post_for_user($user_id){
   return 0;
 }
 
+// ✅ ←この関数は「mkn_ensure_company_post_for_user()」の後に置く！
 function mkn_get_company_post_id($user_id){
-  return (int) mkn_ensure_company_post_for_user($user_id);
+  $pid = (int) mkn_ensure_company_post_for_user($user_id);
+
+  // 管理者の場合：自分の投稿がなくても最初の企業紹介を開けるようにする
+  if ( !$pid && current_user_can('administrator') ) {
+    $first_company = get_posts([
+      'post_type'      => MKN_COMPANY_CPT,
+      'posts_per_page' => 1,
+      'fields'         => 'ids',
+      'post_status'    => ['draft','pending','publish'],
+    ]);
+    if ( $first_company ) {
+      return (int)$first_company[0];
+    }
+  }
+
+  return $pid;
 }
+
+
+
 
 /**
  * =========================================
- * 6) マイページ用ショートコード
+ * 6) マイページ用ショートコード（管理者は全企業表示）
  * =========================================
  */
 add_shortcode('company_mypage_form', function () {
@@ -362,7 +399,59 @@ add_shortcode('company_mypage_form', function () {
   }
 
   $user = wp_get_current_user();
-  if ( !in_array('company_member', (array)$user->roles, true) && !current_user_can('administrator') ) {
+
+  // =======================================================
+  // ▼ 管理者は全ての企業投稿を一覧表示
+  // =======================================================
+  if ( current_user_can('administrator') ) {
+    $companies = get_posts([
+      'post_type'      => MKN_COMPANY_CPT,
+      'posts_per_page' => -1,
+      'post_status'    => ['publish', 'draft', 'pending'],
+      'orderby'        => 'title',
+      'order'          => 'ASC',
+    ]);
+
+    if ( ! $companies ) {
+      return '<p>現在、登録されている企業紹介はありません。</p>';
+    }
+
+    ob_start();
+    ?>
+    <div class="admin-company-list" style="margin-top:30px;">
+  <h2 style="margin-bottom:20px;">登録企業一覧</h2>
+  <ul class="mypage-recruit-list" style="list-style:none;padding:0;">
+    <?php foreach ( $companies as $company ) : ?>
+      <?php $status = get_post_status_object($company->post_status); ?>
+      <li style="border-bottom:1px solid #ccc;padding:15px 0;">
+        <strong style="font-size:18px;"><?php echo esc_html($company->post_title); ?></strong>
+        <span style="color:#666;margin-left:10px;">（<?php echo esc_html($status->label); ?>）</span><br>
+
+        <?php if ( has_post_thumbnail($company->ID) ) : ?>
+          <div style="margin-top:10px;">
+            <?php echo get_the_post_thumbnail($company->ID, 'medium'); ?>
+          </div>
+        <?php endif; ?>
+
+        <div style="margin-top:10px;">
+          <a href="<?php echo get_permalink($company->ID); ?>" target="_blank" style="margin-right:10px;">▶ 公開ページを見る</a>
+          <a href="<?php echo esc_url( add_query_arg('edit_post', $company->ID, site_url('/company-edit/')) ); ?>" style="margin-right:10px;">✏ 編集する</a>
+          <a href="<?php echo get_delete_post_link($company->ID, '', true); ?>" onclick="return confirm('この企業情報を削除しますか？');" style="color:red;">
+            🗑 削除する
+          </a>
+        </div>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>
+    <?php
+    return ob_get_clean();
+  }
+
+  // =======================================================
+  // ▼ 一般企業ユーザー用（自社情報フォーム）
+  // =======================================================
+  if ( !in_array('company_member', (array)$user->roles, true) ) {
     return '<p>このページを表示する権限がありません。</p>';
   }
 
@@ -394,13 +483,18 @@ add_shortcode('company_mypage_form', function () {
   return $meta . $html;
 });
 
+
 /**
  * =========================================
- * 7) マイページアクセス時に自動的に post_id を付与
- *    & 他人の post_id を指定したら自分のにリダイレクト
+ * 7) マイページアクセス時のリダイレクト（企業ユーザーのみ）
  * =========================================
  */
 add_action('template_redirect', function () {
+  // 管理者は何もしない（一覧を見せたいのでリダイレクト禁止）
+  if ( current_user_can('administrator') ) {
+    return;
+  }
+
   if ( is_page('mypage') && is_user_logged_in() ) {
     $user    = wp_get_current_user();
     $post_id = mkn_get_company_post_id($user->ID);
@@ -409,11 +503,7 @@ add_action('template_redirect', function () {
 
     $req_id = isset($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 
-    if ( current_user_can('administrator') ) {
-      // 管理者は自由にアクセス可
-      return;
-    }
-
+    // 他人の投稿IDを指定してアクセスしている場合はリダイレクト
     if ( $req_id !== $post_id ) {
       wp_safe_redirect( add_query_arg('post_id', $post_id, get_permalink()) );
       exit;
@@ -421,85 +511,341 @@ add_action('template_redirect', function () {
   }
 });
 
-/**
- * =========================================
- * 8) 保存時に必ず「公開」へ変更（掲載企業ユーザーのみ）
- * =========================================
- */
-add_action('save_post_company', function($post_id, $post, $update){
-  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
-  if ( wp_is_post_revision($post_id) ) return;
-  if ( current_user_can('administrator') ) return;
 
-  if ( $post->post_status !== 'publish' ) {
-    wp_update_post([
-      'ID'          => $post_id,
-      'post_status' => 'publish',
-    ]);
-  }
+
+
+// 投稿保存時に投稿者を現在のユーザーに設定
+add_filter('frontend_admin/default_post_author', function($author, $form, $post_id){
+  return get_current_user_id();
 }, 10, 3);
 
 
 
-// フロントでは ACF の company_image フィールドを独自UIに差し替え
-add_filter('acf/render_field/name=company_image', function($field) {
-  if ( is_admin() ) return $field;
-
-  $value = $field['value']; // 現在の添付ID
-  ob_start();
-  ?>
-  <div class="company-upload-wrapper">
-      <?php if ($value): ?>
-          <p>現在の画像:</p>
-          <?php echo wp_get_attachment_image($value, 'medium', false, ['id' => 'company_image_preview']); ?>
-      <?php else: ?>
-          <img id="company_image_preview" src="" style="display:none;max-width:200px;margin-bottom:10px;">
-      <?php endif; ?>
-
-      <!-- hidden input（ACF用・ここはそのまま残す） -->
-      <input type="hidden" name="acf[<?php echo esc_attr($field['key']); ?>]" value="<?php echo esc_attr($value); ?>" />
-
-      <p>
-          <label>会社画像をアップロード:</label><br>
-          <input type="file" name="company_image_file" accept="image/*" onchange="previewCompanyImage(event)" />
-      </p>
-  </div>
-
-  <script>
-  function previewCompanyImage(e) {
-      var reader = new FileReader();
-      reader.onload = function(){
-          var img = document.getElementById("company_image_preview");
-          img.src = reader.result;
-          img.style.display = "block";
-      };
-      reader.readAsDataURL(e.target.files[0]);
+// 掲載企業ロールに必要な権限を追加
+function add_recruit_capabilities_to_publisher() {
+  $role = get_role('掲載企業');
+  if ($role) {
+    $role->add_cap('read');
+    $role->add_cap('edit_posts');
+    $role->add_cap('delete_posts');
+    $role->add_cap('publish_posts'); // ← ここが公開権限
+    $role->add_cap('upload_files');
   }
-  </script>
-  <?php
-  echo ob_get_clean();
-  return false; // 元のUIは出さない
+}
+add_action('init', 'add_recruit_capabilities_to_publisher');
+
+
+// Frontend Admin 送信後のエラーメッセージ非表示
+add_filter('frontend_admin/error_message', function($message, $form_id) {
+  // 特定フォーム（採用情報）の場合のみ
+  if ($form_id == 100) {
+    return ''; // メッセージを空にする
+  }
+  return $message;
+}, 10, 2);
+
+
+// ---------------------------------------------
+// ログイン時に自動的に company_post_id を保証する
+// ---------------------------------------------
+add_action('wp_login', function($user_login, $user) {
+  if ( in_array('company_member', (array)$user->roles, true) ) {
+    $post_id = mkn_get_company_post_id($user->ID);
+
+    // 投稿が存在しない場合 → 自動生成
+    if ( !$post_id ) {
+      $company_name = get_user_meta($user->ID, 'company_name', true);
+      $title = $company_name ?: ($user->display_name ?: $user->user_login);
+
+      $new_post_id = wp_insert_post([
+        'post_type'   => MKN_COMPANY_CPT,
+        'post_status' => 'draft',
+        'post_title'  => sanitize_text_field($title),
+        'post_author' => $user->ID,
+      ]);
+
+      if ( $new_post_id && !is_wp_error($new_post_id) ) {
+        update_user_meta($user->ID, 'company_post_id', (int)$new_post_id);
+      }
+    }
+  }
+}, 10, 2);
+
+
+// ACFタクソノミーを投稿タームに同期
+add_action('acf/save_post', function($post_id) {
+  if (get_post_type($post_id) !== 'company') return;
+
+  // 業種
+  $industry = get_field('company_industry', $post_id);
+  if ($industry) {
+      wp_set_post_terms($post_id, $industry, 'company_industry', false);
+  }
+
+  // 地域
+  $area = get_field('company_area', $post_id);
+  if ($area) {
+      wp_set_post_terms($post_id, $area, 'company_area', false);
+  }
 });
 
-// 保存時にファイルを強制的に ACF に反映
-add_action('acf/save_post', function($post_id) {
-  if ( is_admin() ) return;
 
-  if ( !empty($_FILES['company_image_file']['name']) ) {
-      require_once ABSPATH . 'wp-admin/includes/file.php';
-      require_once ABSPATH . 'wp-admin/includes/media.php';
-      require_once ABSPATH . 'wp-admin/includes/image.php';
+/**
+ * =======================================================
+ * Frontend Admin 経由で投稿された ACF タクソノミーフィールドを確実に同期
+ * =======================================================
+ */
+add_action('frontend_admin/after_save_post', function($form, $post_id) {
+  if (get_post_type($post_id) !== 'company') return;
 
-      $attachment_id = media_handle_upload('company_image_file', $post_id);
+  // 業種（industry）
+  $industry_field = get_field('company_industry', $post_id);
+  if (!empty($industry_field)) {
+    $industry_terms = is_array($industry_field)
+      ? array_map('intval', $industry_field)
+      : [(int)$industry_field];
+    wp_set_post_terms($post_id, $industry_terms, 'industry', false); // ← 修正
+  }
 
-      if ( !is_wp_error($attachment_id) ) {
-          // フィールドキーで強制保存
-          update_field('field_68db76f81ce99', $attachment_id, $post_id);
+  // 地域（area）
+  $area_field = get_field('company_area', $post_id);
+  if (!empty($area_field)) {
+    $area_terms = is_array($area_field)
+      ? array_map('intval', $area_field)
+      : [(int)$area_field];
+    wp_set_post_terms($post_id, $area_terms, 'area', false); // ← 修正
+  }
 
-          // アイキャッチにも設定（任意）
-          set_post_thumbnail($post_id, $attachment_id);
+}, 20, 2);
+
+add_action('init', function(){
+  $role = get_role('company_member');
+  if ($role) {
+    $role->add_cap('edit_posts');
+    $role->add_cap('edit_others_posts');
+    $role->add_cap('publish_posts');
+    $role->add_cap('upload_files');
+    $role->add_cap('edit_published_posts');
+  }
+});
+
+
+/**
+ * =========================================
+ * 企業編集ページ（/company-edit/）の不正アクセス防止
+ * =========================================
+ */
+add_action('template_redirect', function () {
+  if ( ! is_page('company-edit') || ! is_user_logged_in() ) {
+    return;
+  }
+
+  $user = wp_get_current_user();
+
+  // 管理者は制限しない
+  if ( current_user_can('administrator') ) {
+    return;
+  }
+
+  // 掲載企業ユーザー以外はアクセス禁止
+  if ( ! in_array('company_member', (array)$user->roles, true) ) {
+    wp_safe_redirect(site_url('/'));
+    exit;
+  }
+
+  // ユーザー自身の企業投稿IDを取得
+  $own_post_id = (int) get_user_meta($user->ID, 'company_post_id', true);
+  if ( ! $own_post_id ) {
+    wp_safe_redirect(site_url('/'));
+    exit;
+  }
+
+  // URLに ?edit_post=xxx が付いている場合を確認
+  $req_id = isset($_GET['edit_post']) ? (int) $_GET['edit_post'] : 0;
+
+  // 違うIDを指定されたら強制的に自分の投稿IDにリダイレクト
+  if ( $req_id !== $own_post_id ) {
+    wp_safe_redirect( add_query_arg('edit_post', $own_post_id, site_url('/company-edit/')) );
+    exit;
+  }
+});
+
+
+
+/**
+ * =========================================
+ * 採用情報編集ページ（/mypage-edit/）の不正アクセス防止＋自動補正
+ * =========================================
+ */
+add_action('template_redirect', function () {
+  if ( ! is_page('mypage-edit') || ! is_user_logged_in() ) {
+    return;
+  }
+
+  $user = wp_get_current_user();
+
+  // 管理者は制限しない
+  if ( current_user_can('administrator') ) {
+    return;
+  }
+
+  // 掲載企業ユーザー以外はアクセス禁止
+  if ( ! in_array('company_member', (array)$user->roles, true) ) {
+    wp_safe_redirect(site_url('/'));
+    exit;
+  }
+
+  // 現在のリクエストIDを取得
+  $req_id = isset($_GET['edit_post']) ? (int) $_GET['edit_post'] : 0;
+
+  // そのユーザーが投稿した採用情報をすべて取得
+  $user_recruits = get_posts([
+    'post_type'      => 'recruit',
+    'author'         => $user->ID,
+    'posts_per_page' => 1,
+    'post_status'    => ['publish', 'draft', 'pending'],
+    'orderby'        => 'ID',
+    'order'          => 'DESC',
+    'fields'         => 'ids',
+  ]);
+
+  // 採用情報がまだ1件もない場合はマイページへ戻す
+  if ( empty($user_recruits) ) {
+    wp_safe_redirect(site_url('/mypage/'));
+    exit;
+  }
+
+  // 自分の最新の採用情報IDを取得
+  $own_post_id = (int) $user_recruits[0];
+
+  // 不正な投稿IDを指定された場合、自分の採用情報編集ページにリダイレクト
+  if ( $req_id !== $own_post_id ) {
+    wp_safe_redirect( add_query_arg('edit_post', $own_post_id, site_url('/mypage-edit/')) );
+    exit;
+  }
+});
+
+
+// 🔧 Frontend Admin アップロード上限バリデーション強制上書き
+add_action('init', function() {
+  // JS側のファイル検証を無効化
+  add_filter('frontend_admin/validate/file_size', '__return_false');
+});
+
+// PHPサーバー側の最大アップロードサイズを10MBに設定
+@ini_set('upload_max_filesize', '10M');
+@ini_set('post_max_size', '12M');
+@ini_set('max_execution_time', '300');
+@ini_set('max_input_time', '300');
+
+
+/**
+ * 会社画像を変更した際、古い画像を自動削除（最新1枚だけ保持）
+ */
+add_action('acf/update_value/name=company_image', function($new_value, $post_id, $field) {
+
+    // 投稿タイプを限定（例：company）※あなたのCPTスラッグに合わせて変更
+    if (get_post_type($post_id) !== 'company') {
+        return $new_value;
+    }
+
+    // 現在DBに保存されている古い画像IDを取得
+    $old_value = get_field('company_image', $post_id);
+
+    // 古い画像と新しい画像が異なる場合のみ削除処理
+    if ($old_value && $old_value !== $new_value) {
+        wp_delete_attachment($old_value, true); // サーバーから完全削除
+    }
+
+    return $new_value;
+}, 10, 3);
+
+
+
+/**
+ * 企業情報投稿の公開フロー制御
+ */
+add_action('save_post_company', function($post_id, $post, $update) {
+
+  // 自動保存やリビジョンをスキップ
+  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+  if (wp_is_post_revision($post_id)) return;
+
+  // 投稿タイプをチェック
+  if (get_post_type($post_id) !== 'company') return;
+
+  $author_id       = (int) $post->post_author;
+  $current_user_id = get_current_user_id();
+  $current_status  = get_post_status($post_id);
+
+  // --------------------------------------------------------
+  // ① 新規作成（初回登録） → draft（下書き）
+  // --------------------------------------------------------
+  if (!$update && $current_status !== 'publish') {
+      wp_update_post([
+          'ID'          => $post_id,
+          'post_status' => 'draft',
+      ]);
+      return;
+  }
+
+  // --------------------------------------------------------
+  // ② 管理者が公開したら → publish に変更
+  // --------------------------------------------------------
+  if (current_user_can('administrator')) {
+      if ($current_status !== 'publish') {
+          wp_update_post([
+              'ID'          => $post_id,
+              'post_status' => 'publish',
+          ]);
+      }
+      return;
+  }
+
+  // --------------------------------------------------------
+  // ③ 掲載企業ユーザーが編集した場合 → 常に公開維持
+  // --------------------------------------------------------
+  $user = get_userdata($current_user_id);
+  if ($user && in_array('company_member', (array) $user->roles, true)) {
+
+      // 自分の投稿だけ対象にする
+      if ($current_user_id === $author_id) {
+          wp_update_post([
+              'ID'          => $post_id,
+              'post_status' => 'publish', // 常に公開を維持
+          ]);
       }
   }
-}, 20); // 20優先度で確実にACF保存後に実行
+
+}, 20, 3);
 
 
+
+
+/**
+ * 掲載企業ユーザーが削除されたら、その企業の投稿（企業情報・採用情報）をすべて削除する
+ */
+add_action('delete_user', function($user_id) {
+
+  // ▼ 投稿タイプごとの削除対象を定義（必要に応じて増減OK）
+  $post_types = ['company', 'recruit'];
+
+  foreach ($post_types as $post_type) {
+
+      // 該当ユーザーが投稿した記事を取得
+      $posts = get_posts([
+          'post_type'      => $post_type,
+          'author'         => $user_id,
+          'posts_per_page' => -1,
+          'post_status'    => ['publish', 'pending', 'draft', 'private'],
+      ]);
+
+      // 投稿が存在すれば削除処理
+      if ($posts) {
+          foreach ($posts as $post) {
+              wp_delete_post($post->ID, true); // true で完全削除（ゴミ箱経由しない）
+          }
+      }
+  }
+
+}, 10, 1);

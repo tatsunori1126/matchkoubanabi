@@ -1,29 +1,234 @@
 @charset "UTF-8";
 @use "../../foundation/mixin";
 @use "../utility/color";
+// 企業一覧ページ
 .p-company {
     padding: 120px 0;
     .p-company__container {
-        display: grid;
-        justify-content: space-between;
-        grid-template-columns: 30% 30% 30%;
+        display: flex;
+        flex-direction: column;
         row-gap: 50px;
         .p-company__wrapper {
             width: 100%;
             .p-company__box {
-                .p-company__item-img {
-                    width: 100%;
+                display: flex;
+                column-gap: 40px;
+                .p-company__item-img-wrapper {
+                    width: 30%;
                     height: 240px;
-                    object-fit: cover;
-                    border-radius: 10px;
-                }
-                .p-company__item-detail-wrapper {
-                    .p-company__item-title {
-                        color: color.$textColor;
-                        font-size: 2rem;
-                        letter-spacing: 0.05em;
+                    .p-company__item-img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 10px;
                     }
                 }
+                .p-company__item-detail-wrapper {
+                    width: 70%;
+                    .p-company__item-title {
+                        color: color.$mainColor;
+                        font-size: 2rem;
+                        letter-spacing: 0.1em;
+                    }
+                    .p-company__item-info {
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 5px;
+                        margin: 10px 0 8px;
+                        li {
+                            display: flex;
+                            .p-company__item-sub-title {
+                                font-weight: 500;
+                                letter-spacing: 0.05em;
+                                color: color.$textColor;
+                                font-size: 1.6rem;
+                            }
+                            .p-company__item-action {
+                                color: color.$textColor;
+                                letter-spacing: 0.05em;
+                                font-size: 1.6rem;
+                            }
+                        }
+                    }
+                    .p-company__btn {
+                        background: color.$mainColor;
+                        width: 180px;
+                        height: 45px;
+                        font-size: 1.6rem;
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: color.$subColor;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// 企業詳細ページ
+.p-company-single {
+    padding: 120px 0;
+    .p-company-single__base-card {
+        background: #fafafa;
+        border-radius: 10px;
+        box-shadow: 2px 2px 1px rgba(0,0,0,0.08);
+        padding: 60px 40px;
+        .p-company-single__basic {
+            .p-company-single__basic-inner {
+                display: flex;
+                align-items: flex-start;
+                column-gap: 30px;
+                .p-company-single__image {
+                    width: 35%;
+                    .p-company-single__img {
+                        width: 100%;
+                        height: 350px;
+                        border-radius: 8px;
+                        object-fit: cover;
+                    }
+                }
+                .p-company-single__info {
+                    width: 65%;
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 20px;
+                    .p-company-single__name {
+                        color: color.$mainColor;
+                        font-size: 2.8rem;
+                        font-weight: 700;
+                        letter-spacing: 0.1em;
+                    }
+                    .p-company-single__list {
+                        display: flex;
+                        flex-direction: column;
+                        row-gap: 8px;
+                        li {
+                            font-size: 1.6rem;
+                            letter-spacing: 0.05em;
+                            color: color.$textColor;
+                            a {
+                                color: color.$textColor;
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .p-company-single__section {
+            .p-company-single__sub-title {
+                font-size: 2rem;
+                font-weight: 700;
+                color: color.$mainColor;
+                letter-spacing: 0.1em;
+                margin: 40px 0 20px;
+                width: fit-content;
+                border-bottom: 2px solid color.$mainColor;
+            }
+            .p-company-single__text {
+                font-size: 1.6rem;
+                letter-spacing: 0.05em;
+                color: color.$textColor;
+                line-height: 1.8;
+            }
+            .p-company-single__list-wrapper {
+                display: flex;
+                flex-direction: column;
+                row-gap: 8px;
+            }
+            .p-company-single__strength {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                li {
+                    background: color.$subColor;
+                    padding: 10px 20px;
+                    width: fit-content;
+                    border-radius: 10px;
+                    letter-spacing: 0.05em;
+                    font-size: 1.6rem;
+                    color: color.$textColor;
+                    font-weight: 500;
+                    box-shadow: 2px 2px 1px rgba(0,0,0,0.08);
+                }
+            }
+        }
+    }
+}
+
+
+// 企業一覧フィルター
+/* ▼ ボタン切り替え */
+.p-company__filter-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    .p-company__filter-toggle-btn {
+        background: color.$subColor;
+        color: color.$mainColor;
+        border: 2px solid color.$mainColor;
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        &.active,
+        &:hover {
+            background: color.$mainColor;
+            color: color.$subColor;
+        }
+    }
+}
+
+  /* ▼ パネル */
+.p-company__filter-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 0 20px;
+    margin-bottom: 40px;
+
+    &.open {
+        opacity: 1;
+        visibility: visible;
+        padding: 30px 20px;
+    }
+
+    .p-company__filter-block {
+        margin-bottom: 40px;
+        .p-company__filter-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: color.$mainColor;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .p-company__terms {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: left;
+            gap: 10px;
+        }
+        .p-company__term-btn {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px 14px;
+            text-decoration: none;
+            color: color.$textColor;
+            background: color.$subColor;
+            transition: 0.3s;
+            &:hover {
+                background: color.$mainColor;
+                color: color.$subColor;
+                border-color: color.$mainColor;
             }
         }
     }
